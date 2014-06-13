@@ -14,9 +14,13 @@ RSpec.describe "Verify required rspec dependencies" do
     EOF
     FileUtils.chmod "+x", script
 
-    expect(`bundle exec #{script} 2>&1`).
-      to match /undefined method `require_rspec_core' for RSpec::Support:Module/
-    expect($?.exitstatus).to eq 1
+    Bundler.with_clean_env do
+      expect(`bundle exec #{script} 2>&1`).
+        to match(/uninitialized constant RSpec::Support (NameError)/).
+        or match(/undefined method `require_rspec_core' for RSpec::Support:Module/)
+
+      expect($?.exitstatus).to eq(1)
+    end
   end
 
   it "passes when libraries are required" do
@@ -29,8 +33,10 @@ RSpec.describe "Verify required rspec dependencies" do
     EOF
     FileUtils.chmod "+x", script
 
-    expect(`bundle exec #{script} 2>&1`).to be_empty
-    expect($?.exitstatus).to eq 0
+    Bundler.with_clean_env do
+      expect(`bundle exec #{script} 2>&1`).to be_empty
+      expect($?.exitstatus).to eq(0)
+    end
   end
 
 end
