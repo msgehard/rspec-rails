@@ -84,7 +84,7 @@ module RSpec::Rails::Matchers
         test_response = as_test_response(response)
         @actual = test_response.response_code
         expected == @actual
-      rescue TypeError => _ignored
+      rescue TypeError => _
         @invalid_response = response
         false
       end
@@ -139,7 +139,7 @@ module RSpec::Rails::Matchers
         test_response = as_test_response(response)
         @actual = test_response.response_code
         expected == @actual
-      rescue TypeError => _ignored
+      rescue TypeError => _
         @invalid_response = response
         false
       end
@@ -254,7 +254,7 @@ module RSpec::Rails::Matchers
         test_response = as_test_response(response)
         @actual = test_response.response_code
         test_response.send("#{expected}?")
-      rescue TypeError => _ignored
+      rescue TypeError => _
         @invalid_response = response
         false
       end
